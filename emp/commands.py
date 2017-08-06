@@ -43,15 +43,16 @@ def command(empfiles, minimal=False, force=False, mode='install'):
         question = '{0}: {1}? [y/n]'.format(dirname, mode)
         if force or emp.prompt(question, logger=logger):
             # check dependencies
-            cmds = config['dependencies']
+            if 'dependencies' in config:
+                cmds = config['dependencies']
 
-            logger.info('start checking dependencies')
-            if emp.check_dependencies(cmds, cwd=path, logger=logger):
-                logger.error('failed to install dependencies')
-                logger.error('skipped execution')
-                continue
-            else:
-                logger.info('finish checking dependencies')
+                logger.info('start checking dependencies')
+                if emp.check_dependencies(cmds, cwd=path, logger=logger):
+                    logger.error('failed to install dependencies')
+                    logger.error('skipped execution')
+                    continue
+                else:
+                    logger.info('finish checking dependencies')
 
             # execute command
             if 'default' in config:
