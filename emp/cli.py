@@ -35,7 +35,7 @@ from docopt import docopt
 
 # functions
 def main():
-    args = docopt(__doc__)
+    args = docopt(__doc__, version=emp.__version__)
     logger = emp.logger
 
     # set logfile (optional)
