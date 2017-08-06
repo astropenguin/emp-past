@@ -13,7 +13,7 @@ Options:
   -h --help             Show this screen and exit.
   -v --version          Show the version and exit.
   -f --force            Force to answer every question with Yes.
-  -m --minimum          Run a command with a minimum script.
+  -m --minimal          Run a command with a minimal script.
   --github <user/repo>  Clone a dotfiles' repository from GitHub.
   --gitlab <user/repo>  Clone a dotfiles' repository from GitLab.
   --url <url>           Clone a dotfiles' repository from a URL.
@@ -64,15 +64,15 @@ def main():
         sys.exit()
 
     # main command
-    minimum = args['--minimum']
+    minimal = args['--minimal']
     force = args['--force']
 
     if args['install']:
-        emp.install(empfiles, minimum, force)
+        emp.install(empfiles, minimal, force)
     elif args['backup']:
-        emp.backup(empfiles, minimum, force)
+        emp.backup(empfiles, minimal, force)
     elif args['uninstall']:
-        emp.uninstall(empfiles, minimum, force)
+        emp.uninstall(empfiles, minimal, force)
 
     # finally
     logger.info('emp finished')

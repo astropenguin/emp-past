@@ -23,7 +23,7 @@ import yaml
 
 
 # functions
-def command(empfiles, minimum=False, force=False, mode='install'):
+def command(empfiles, minimal=False, force=False, mode='install'):
     for path in glob.glob(emp.join_path(empfiles, '*')):
         dirname = os.path.basename(path)
         filename = emp.join_path(path, emp.CONFIGFILE)
@@ -61,11 +61,11 @@ def command(empfiles, minimum=False, force=False, mode='install'):
                 logger.error('skipped execution')
                 continue
 
-            if minimum:
-                if 'minimum' in config:
-                    cmds = config['minimum']
+            if minimal:
+                if 'minimal' in config:
+                    cmds = config['minimal']
                 else:
-                    logger.warning('minimum script is not found')
+                    logger.warning('minimal script is not found')
                     logger.warning('using default script instead')
 
             logger.info('start execution')
