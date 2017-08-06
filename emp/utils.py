@@ -6,10 +6,10 @@ from __future__ import unicode_literals as _unicode_literals
 
 # public items
 __all__ = [
-    'call',
     'clone_github',
     'clone_gitlab',
     'clone_url',
+    'run_script',
 ]
 
 # standard library
@@ -28,22 +28,11 @@ URL_GITLAB = 'https://gitlab.com/{0}/{1}.git'
 
 
 # functions
-def call(cmds, shell=False, logger=None):
-    logger = logger or emp.logger
-    proc = Popen(cmds, shell=shell, stdout=PIPE, stderr=STDOUT)
 def clone_github(user, repo, cwd=None, logger=None):
     logger = logger or getLogger('emp.clone_github')
     cmds = 'git clone ' + URL_GITHUB.format(user, repo)
     return run_script(cmds, cwd=cwd, logger=logger)
 
-    while True:
-        line = proc.stdout.readline()
-        if line:
-            logger.info(line.decode('utf-8').rstrip())
-        else:
-            returncode = proc.poll()
-            if returncode is not None:
-                return returncode
 
 def clone_gitlab(user, repo, cwd=None, logger=None):
     logger = logger or getLogger('emp.clone_gitlab')
@@ -63,4 +52,15 @@ def clone_url(url, cwd=None, logger=None):
 
 
 
+def run_script(cmds, log=True, cwd=None, logger=None):
+    logger = logger or getLogger('emp.run_script')
+    proc = Popen(cmds, stdout=PIPE, stderr=STDOUT, shell=True, cwd=cwd)
 
+    while True:
+        line = proc.stdout.readline()
+        if line and log:
+            logger.info(line.decode('utf-8').rstrip())
+        else:
+            returncode = proc.poll()
+            if returncode is not None:
+                return returncode
