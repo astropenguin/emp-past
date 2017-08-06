@@ -18,9 +18,9 @@ import sys
 # dependent packages
 import emp
 
-# module constants
+# local constants
 DATEFORMAT = '%Y-%m-%d %H:%M:%S'
-FORMAT = '%(asctime)s %(message)s'
+FORMAT = '%(asctime)s %(name)-20s %(message)s'
 
 
 # functions
