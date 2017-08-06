@@ -42,7 +42,9 @@ def check_dependencies(dependencies, cwd=None, logger=None):
     for dependency in dependencies:
         if run_script(dependency['try'], False, cwd=cwd, logger=logger):
             if run_script(dependency['except'], True, cwd=cwd, logger=logger):
-                raise OSError('{0} is not installed'.format(key))
+                return 1
+
+    return 0
 
 
 def clone_github(user, repo, cwd=None, logger=None):
