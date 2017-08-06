@@ -20,7 +20,7 @@ import emp
 
 # local constants
 DATEFORMAT = '%Y-%m-%d %H:%M:%S'
-FORMAT = '%(asctime)s %(name)-20s %(message)s'
+FORMAT = '%(asctime)s %(name)s [%(levelname)s] %(message)s'
 
 
 # functions
