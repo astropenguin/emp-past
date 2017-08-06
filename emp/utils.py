@@ -45,19 +45,17 @@ def clone_github(user, repo, cwd=None, logger=None):
             if returncode is not None:
                 return returncode
 
+def clone_gitlab(user, repo, cwd=None, logger=None):
+    logger = logger or getLogger('emp.clone_gitlab')
+    cmds = 'git clone ' + URL_GITLAB.format(user, repo)
+    return run_script(cmds, cwd=cwd, logger=logger)
 
 
 
 
-def clone_gitlab(args):
-    try:
-        user, repo = args['--gitlab'].split('/')
-    except ValueError:
-        user, repo = args['--gitlab'], REPO
 
-    cmds = ['git', 'clone', URL_GITLAB.format(user, repo)]
-    logger = getLogger('emp.clone_gitlab')
-    return call(cmds, logger=logger)
+
+
 
 
 def clone_url(args):
