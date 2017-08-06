@@ -23,28 +23,59 @@ import yaml
 
 
 # functions
-def command(empfiles, mode, minimum=False, force=False):
+def command(empfiles, minimum=False, force=False, mode='install'):
     for path in glob.glob(emp.join_path(empfiles, '*')):
         dirname = os.path.basename(path)
         filename = emp.join_path(path, emp.CONFIGFILE)
+        logger = getLogger('emp.{0}'.format(dirname))
 
-        if not os.path.exists(filename):
+        if os.path.exists(filename):
+            with open(filename) as f:
+                configs = yaml.load(f)
+        else:
             continue
 
-        with open(filename) as f:
-            configs = yaml.load(f)
-
-        logger = getLogger('emp.{0}'.format(dirname))
-        question = '{0}: {1}?'.format(dirname, mode)
-        answer = force or emp.prompt(question, logger=logger)
-
-        if (mode in configs) and answer:
+        if mode in configs:
             config = configs[mode]
-            emp.check_dependencies(config['dependencies'], logger=logger)
-            if minimum:
-                emp.run_script(config['minimum'], cwd=path, logger=logger)
+        else:
+            continue
+
+        question = '{0}: {1}? [y/n]'.format(dirname, mode)
+        if force or emp.prompt(question, logger=logger):
+            # check dependencies
+            cmds = config['dependencies']
+
+            logger.info('start checking dependencies')
+            if emp.check_dependencies(cmds, cwd=path, logger=logger):
+                logger.error('failed to install dependencies')
+                logger.error('skipped execution')
+                continue
             else:
-                emp.run_script(config['default'], cwd=path, logger=logger)
+                logger.info('finish checking dependencies')
+
+            # execute command
+            if 'default' in config:
+                cmds = config['default']
+            else:
+                logger.error('default script is not found')
+                logger.error('skipped execution')
+                continue
+
+            if minimum:
+                if 'minimum' in config:
+                    cmds = config['minimum']
+                else:
+                    logger.warning('minimum script is not found')
+                    logger.warning('using default script instead')
+
+            logger.info('start execution')
+            if emp.run_script(cmds, cwd=path, logger=logger):
+                logger.error('failed to finish execution')
+                continue
+            else:
+                logger.info('finish execution')
+        else:
+            logger.info('skipped execution')
 
 
 install = partial(command, mode='install')
