@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 setup(
     name = 'emp',
     description = __doc__,
-    version = '0.1.2',
+    version = '0.1.3',
     author = 'snoopython',
     author_email = 'taniguchi@ioa.s.u-tokyo.ac.jp',
     url = 'https://github.com/snoopython/emp',
