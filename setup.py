@@ -9,13 +9,15 @@ from __future__ import unicode_literals as _unicode_literals
 # standard library
 from setuptools import setup, find_packages
 
+# dependent packages
+import emp
 
 # main
 setup(
     name = 'emp',
     description = __doc__,
-    version = '0.1.3',
-    author = 'snoopython',
+    version = emp.__version__,
+    author = emp.__author__,
     author_email = 'taniguchi@ioa.s.u-tokyo.ac.jp',
     url = 'https://github.com/snoopython/emp',
     entry_points = {'console_scripts': ['emp=emp.cli:main']},
