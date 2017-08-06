@@ -31,6 +31,10 @@ URL_GITLAB = 'https://gitlab.com/{0}/{1}.git'
 def call(cmds, shell=False, logger=None):
     logger = logger or emp.logger
     proc = Popen(cmds, shell=shell, stdout=PIPE, stderr=STDOUT)
+def clone_github(user, repo, cwd=None, logger=None):
+    logger = logger or getLogger('emp.clone_github')
+    cmds = 'git clone ' + URL_GITHUB.format(user, repo)
+    return run_script(cmds, cwd=cwd, logger=logger)
 
     while True:
         line = proc.stdout.readline()
@@ -42,15 +46,7 @@ def call(cmds, shell=False, logger=None):
                 return returncode
 
 
-def clone_github(args):
-    try:
-        user, repo = args['--github'].split('/')
-    except ValueError:
-        user, repo = args['--github'], REPO
 
-    cmds = ['git', 'clone', URL_GITHUB.format(user, repo)]
-    logger = getLogger('emp.clone_github')
-    return call(cmds, logger=logger)
 
 
 def clone_gitlab(args):
