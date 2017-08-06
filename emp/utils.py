@@ -73,19 +73,20 @@ def join_path(*paths):
 def parse_user_repo(args):
     if args['--github']:
         try:
-            return args['--github'].split('/')
+            user, repo = args['--github'].split('/')
         except ValueError:
-            return args['--github'], emp.EMPREPO
+            user, repo = args['--github'], emp.EMPREPO
     elif args['--gitlab']:
         try:
-            return args['--gitlab'].split('/')
+            user, repo = args['--gitlab'].split('/')
         except ValueError:
-            return args['--gitlab'], emp.EMPREPO
+            user, repo = args['--gitlab'], emp.EMPREPO
     elif args['--url']:
-        return None, args['--url'].split('/')[-1].rsplit('.git')
+        user, repo = None, args['--url'].split('/')[-1].rsplit('.git')
     else:
-        return None, ''
+        user, repo = None, ''
 
+    return user, repo
 
 def prompt(question, returntrue='^[Y|y]', logger=None):
     logger = logger or getLogger('emp.prompt')
