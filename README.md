@@ -1,1 +1,1 @@
-# :penguin: Empower your Mac with simple config files
+# Emp: empower your Mac with simple config files
