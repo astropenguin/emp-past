@@ -51,6 +51,10 @@ def clone_gitlab(user, repo, cwd=None, logger=None):
     return run_script(cmds, cwd=cwd, logger=logger)
 
 
+def clone_url(url, cwd=None, logger=None):
+    logger = logger or getLogger('emp.clone_url')
+    cmds = 'git clone ' + url
+    return run_script(cmds, cwd=cwd, logger=logger)
 
 
 
@@ -58,6 +62,5 @@ def clone_gitlab(user, repo, cwd=None, logger=None):
 
 
 
-def clone_url(args):
-    cmds = ['git', 'clone', args['--url']]
-    return call(cmds, logger=logger)
+
+
